@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Rody ❤️</title>
+
+    <meta property="og:title" content="To Rody ❤️">
+    <meta property="og:description" content="بحبك أوي يا قطتي ✨">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #fdf0f4;
+            --card-bg: #ffffff;
+            --primary-pink: #f8dae2;
+            --accent-red: #a81c39;
+            --text-dark: #4a1525;
+            --soft-border: #f3c2d0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #lockScreen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #fdf0f4;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .pass-card {
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(168, 28, 57, 0.1);
+            border: 1px solid var(--soft-border);
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .pass-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--soft-border);
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .floating-heart {
+            position: fixed;
+            color: #f3a4b5;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 8s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: 0 10px 25px rgba(168, 28, 57, 0.05);
+            text-align: center;
+            border: 1px solid var(--soft-border);
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            color: var(--accent-red);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--accent-red);
+            margin: 10px 0 0;
+        }
+
+        .btn-main {
+            background-color: var(--accent-red);
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(168, 28, 57, 0.3);
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-main:active {
+            transform: scale(0.96);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--primary-pink);
+            color: var(--accent-red);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .timer-title {
+            font-size: 1.8rem;
+            color: var(--accent-red);
+            margin: 5px 0;
+        }
+
+        .timer-subtitle {
+            color: #777;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .timer-box.full { grid-column: span 2; }
+
+        .timer-box {
+            background: #fff5f7;
+            border: 1px solid var(--soft-border);
+            border-radius: 16px;
+            padding: 15px 5px;
+        }
+
+        .timer-num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-red);
+        }
+
+        .timer-label {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .bottom-grid { grid-template-columns: repeat(3, 1fr); }
+
+        .info-pill {
+            background: var(--accent-red);
+            color: white;
+            padding: 10px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        .info-pill-light {
+            background: var(--primary-pink);
+            color: var(--accent-red);
+            padding: 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .reason-card {
+            background: #fff;
+            border: 1px solid var(--soft-border);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .reason-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: right;
+            flex: 1;
+        }
+
+        .reason-num {
+            background: var(--accent-red);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .envelope-box {
+            background: var(--primary-pink);
+            border-radius: 20px;
+            padding: 35px 20px;
+            cursor: pointer;
+            border: 2px dashed var(--soft-border);
+            transition: transform 0.2s ease;
+        }
+
+        .envelope-box:active {
+            transform: scale(0.97);
+        }
+
+        .envelope-heart {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-red);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: #fffdfa;
+            width: 100%;
+            max-width: 420px;
+            max-height: 85vh;
+            border-radius: 20px;
+            padding: 25px;
+            overflow-y: auto;
+            position: relative;
+            line-height: 1.8;
+            text-align: right;
+            background-image: linear-gradient(#e8e8e8 1px, transparent 1px);
+            background-size: 100% 2.2rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; left: 15px;
+            background: #eee;
+            border: none;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .letter-title {
+            color: var(--accent-red);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="lockScreen">
+    <div class="pass-card">
+        <h2 style="color: var(--accent-red); margin-top:0;">إنتي مين يا قطتي؟ ❤️</h2>
+        <p style="font-size: 0.9rem; color: #666;">اكتبي الباسورد يا روحي ✨</p>
+        <input type="text" id="passCode" class="pass-input" placeholder="اكتبي الباسورد هنا..">
+        <button class="btn-main" onclick="checkPass()">افتحي المفاجأة ✨</button>
+        <div id="passError" style="color: var(--accent-red); margin-top: 10px; font-size: 0.85rem; font-weight: bold;"></div>
+    </div>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112188.mp3" type="audio/mpeg">
+</audio>
+
+<div id="heartsContainer"></div>
+
+<div class="container" id="mainContainer">
+
+    <div class="card">
+        <h1 class="header-title">To Rody ❤️</h1>
+        <div class="subtitle">بحبك أوي يا قطتي</div>
+    </div>
+
+    <div class="card">
+        <span class="badge">SINCE MAY 24, 2026</span>
+        <h2 class="timer-title">أحلى أيام حياتي</h2>
+        <div class="timer-subtitle">اليوم اللي مكنتش متخيل هيبقي مهم عندي كده 5/24</div>
+
+        <div class="timer-grid">
+            <div class="timer-box">
+                <div class="timer-num" id="years">00</div>
+                <div class="timer-label">YEARS</div>
+            </div>
+            <div class="timer-box">
+                <div class="timer-num" id="months">00</div>
+                <div class="timer-label">MONTHS</div>
+            </div>
+        </div>
+
+        <div class="timer-grid">
+            <div class="timer-box full">
+                <div class="timer-num" id="days">00</div>
+                <div class="timer-label">DAYS</div>
+            </div>
+        </div>
+
+        <div class="timer-grid bottom-grid">
+            <div class="timer-box">
+                <div class="timer-num" id="hours">00</div>
+                <div class="timer-label">HOURS</div>
+            </div>
+            <div class="timer-box">
+                <div class="timer-num" id="minutes">00</div>
+                <div class="timer-label">MINUTES</div>
+            </div>
+            <div class="timer-box">
+                <div class="timer-num" id="seconds">00</div>
+                <div class="timer-label">SECONDS</div>
+            </div>
+        </div>
+
+        <div class="info-pill" id="days-together">0 days together</div>
+        <div class="info-pill-light" id="next-milestone">0 days to 1 year together</div>
+    </div>
+
+    <div class="card">
+        <span class="badge">WHY I LOVE YOU 💡</span>
+        <h2 class="timer-title" style="font-size: 1.4rem;">دوس هنا يا حبيبتي </h2>
+        <div class="timer-subtitle">كل دوسة هتطلعلك سبب جديد بيخليني بحبك</div>
+        <div id="randomReasonBox" style="background:#fff5f7; border: 1px dashed var(--soft-border); padding: 15px; border-radius:15px; margin-bottom:15px; font-weight:bold; color: var(--accent-red);">
+            دوسي على الزرار تحت عشان تعرفي سبب حبي ليكي  ❤️
+        </div>
+        <button class="btn-main" onclick="showRandomReason()">ليه بحبك؟ ✨</button>
+    </div>
+
+    <div class="card">
+        <span class="badge">8 REASONS</span>
+        <h2 class="timer-title">حاجات بحبها فيكي اوى</h2>
+        <div class="timer-subtitle">بحب كل حاجه فيكي والله يا قطتي ♡</div>
+
+        <div class="reason-card"><span class="reason-text">ضحكتك اللي بتخليني مبسوط منغير سبب</span><span class="reason-num">1</span></div>
+        <div class="reason-card"><span class="reason-text">طريقتك في الكلام معايا</span><span class="reason-num">2</span></div>
+        <div class="reason-card"><span class="reason-text">اهتمامك بيا حتي في أصغر الحاجات</span><span class="reason-num">3</span></div>
+        <div class="reason-card"><span class="reason-text">حبك و حنانك</span><span class="reason-num">4</span></div>
+        <div class="reason-card"><span class="reason-text">وجودك اللي بيخلي اي يوم عادي يبقي حلو</span><span class="reason-num">5</span></div>
+        <div class="reason-card"><span class="reason-text">احساس الامان اللي بحسه وانا بتكلم معايا</span><span class="reason-num">6</span></div>
+        <div class="reason-card"><span class="reason-text">جمالك اللي مش محتاج كلام كتير</span><span class="reason-num">7</span></div>
+        <div class="reason-card"><span class="reason-text">انك إنتي ببساطه.. رودي</span><span class="reason-num">8</span></div>
+    </div>
+
+    <div class="card">
+        <span class="badge">LOVE TEST</span>
+        <h2 class="timer-title" style="font-size: 1.5rem;">Compatibility Calculator</h2>
+        <div class="timer-subtitle">Enter your name to see how compatible you are</div>
+        
+        <div style="margin-bottom: 15px;">
+            <div style="font-size: 0.8rem; color: #888; text-align: right; margin-bottom: 5px;">THEM</div>
+            <input type="text" value="Abdelrahman" readonly style="width: 100%; padding: 12px; border-radius: 12px; border: 1px dashed var(--soft-border); text-align: center; font-size: 1rem; box-sizing: border-box; background: #fff;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <div style="font-size: 0.8rem; color: #888; text-align: right; margin-bottom: 5px;">YOU</div>
+            <input type="text" id="partnerName" placeholder="Enter your name" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--soft-border); text-align: center; font-size: 1rem; box-sizing: border-box;">
+        </div>
+
+        <button class="btn-main" onclick="calcCompat()">Calculate Compatibility</button>
+        <div id="compatResult" style="margin-top: 15px; font-weight: bold; color: var(--accent-red);"></div>
+    </div>
+
+    <div class="card">
+        <div class="envelope-box" onclick="openLetterOnly()">
+            <div class="envelope-heart">R❤️</div>
+            <div class="info-pill-light" style="display: inline-block;">دوسي هنا يا قطتي ✉️</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal" id="letterModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeLetter()">✕</button>
+        <div class="letter-title">رودي حبيبتي ❤️</div>
+        
+        <p>مش عارف أبدأ الرسالة دي منين بصراحة وكل ما أجي أكتبلك حاجة بحس إن مهما كتبت مش هقدر أوصفلك اللي جوايا بجد</p>
+        <p>بس يمكن أحسن حاجة أبدأ بيها هي اليوم اللي عرفتك فيه 24 May اليوم اللي وقتها مكنتش أعرف إنه هيبقى مرتبط عندي بواحدة من أحلى الحاجات اللي حصلتلي</p>
+        <p>من يوم ما عرفتك وإنتي واحدة واحدة بقيتي جزء من يومي ومن تفكيري ومن الحاجات اللي بتخليني أبتسم من غير ما أحس</p>
+        <p>يمكن إنتي متعرفيش قد إيه مجرد رسالة منك ممكن تغير مود يوم كامل عندي وقد إيه لما بشوفك ببقي مرتاح ازاي</p>
+        <p>بحب كلامنا مع بعض بحب هزارنا بحب لما نقعد نتكلم في أي حاجة حتى لو حاجة ملهاش لازمة وبحب التفاصيل الصغيرة اللي بينا اللي يمكن بالنسبة لأي حد تاني تبقى عادية بس بالنسبة ليا بقت حاجات بحبها عشان مرتبطة بيكي</p>
+        <p>يمكن أنا مش دايما بعرف أقول اللي جوايا صح وممكن ساعات أبان مش بعرف أعبر أو أقول كلام قليل بس والله بيبقي جوايا حاجات كتير مش عارف اعبرهالك بس ممكن اعرف هنا</p>
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.1rem;">أنا بحبك يا رودي</p>
+        <p>بحب وجودك في حياتي وبحب إحساس إن في إنسانة معينة لما تحصل حاجة حلوة في يومي ببقى عايز أحكيلها ولما أكون مضايق ببقى نفسي أكلمها</p>
+        <p>وبحب إنك بقيتي من الناس اللي وجودهم بيفرق معايا بجد</p>
+        <p>عايزك تعرفي إنك مش مجرد شخص بحبه وخلاص إنتي بقيتي شخص ليه مكان لوحده جوايا</p>
+        <p>وبالرغم إننا لسه في بداية حكايتنا أنا مبسوط بكل لحظة حصلت بينا ومتحمس لكل اللحظات اللي لسه هتحصل</p>
+        <p>نفسي نفضل نعرف بعض أكتر ونفضل نتكلم أكتر ونضحك أكتر ونعيش حاجات كتير سوا نفتكرها بعدين ونقول فاكرة اليوم ده</p>
+        <p>نفسي نكبر و نتجوز و تكوني بتاعتي</p>
+        <p>واحضنك وابوسك واعمل كل اللي بنقول عليه</p>
+        <p>نفسي يبقى عندنا ذكريات كتير أوي مش بس كلام على الشات لكن أيام ومواقف وضحك وخروجات وصور وحاجات صغيرة تفضل فاكرانا ببعض</p>
+        <p>عايز أفضل الشخص اللي تلاقيه جنبك وقت ما تحتاجيه واللي يسمعك حتى لو بتتكلمي في نفس الموضوع للمرة المليون والله ما هزهق عمري ما ازهق اصلا</p>
+        <p>عايز أشوفك مبسوطة وأشوفك بتضحكي وأكون سبب ولو صغير في إن يومك يبقى حلو</p>
+        <p>ولو في يوم الدنيا ضايقتك أو حسيتي إن كل حاجة تقيلة عليكي أتمنى تفتكري إن في حد هنا بيحبك وبيهمه تكوني كويسة</p>
+        <p>عارف اني مش كامل او مش مثالي و فيا عيوب كتير بس بحاول ابقي احسن عشانك</p>
+        <p>عايزنا نفضل على طبيعتنا نختلف ونتفاهم نهزر ونرغي نزعل ونرجع نضحك والأهم إننا نفضل مع بعض</p>
+        <p>أنا ممكن أفضل أكتبلك كتير أوي ومش هخلص لأن كل ما أفتكر حاجة بحبها فيكي هلاقي حاجة تانية بعدها</p>
+        <p>بحب طريقتك بحب كلامك بحب ضحكتك بحب اهتمامك بحب وجودك وبحب الإحساس اللي بيجيلي لما أعرف إنك موجودة في حياتي</p>
+        <p>بجد شكرا</p>
+        <p>ويمكن أجمل حاجة حصلتلي اني رديت ع المسدج اللي مسحتيها اول مره لو مكنتش رديت مكنش كل ده حصل</p>
+        <p>فشكرا إنك دخلتي حياتي<br>
+        شكرا ع كل مرة ضحكتيني فيها<br>
+        شكرا ع كل كلمة حلوة قولتيها ليا<br>
+        شكرا ع كل مرة حسستيني إني مهم عندك<br>
+        شكرا ع انك بتهوني عليا كل حاجه<br>
+        وشكرا على إنك إنتي رودي ❤️</p>
+        <p>ومهما حاولت أكتب مش هعرف أوصفلك قد إيه أنا مبسوط إنك بتحبيني زي ما أنا بحبك</p>
+        <p>عايز أعيش كل لحظة حلوة بينا وأعمل معاكي ذكريات تفضل معانا وأفضل أقولك كل فترة إن من أحلى القرارات اللي حصلت في حياتي إني قربت منك و حبيتك</p>
+        <p>ويمكن بعد فترة نرجع نقرأ الرسالة دي ونضحك على قد إيه كنت بحاول أوصفلك إحساسي</p>
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.1rem;">بحبك يا رودي ❤️</p>
+        <p>عارف ان الرساله دي مش هتبقى طويله زي النوت بس بحاول اخليها طويله ع قد ما اقدر</p>
+        <p>بس الحقيقة إن كل ما بفكر فيكي بلاقي كلام كتير نفسي أقولهولك ومش عايز أسيب حاجة جوايا من غير ما أقولها</p>
+        <p>يمكن من بره الموضوع يبان عادي إن اتنين اتعرفوا على بعض واتكلموا وقربوا من بعض بس بالنسبالي الموضوع أكبر من كده بكتيييير لأن وجودك في حياتي خلاني أشوف حاجات كتير بشكل مختلف</p>
+        <p>أنا فاكر كل تفصيلة حصلت في أول مرة اتكلمنا فيها و كل كلمة اتقالت بينا في البداية و الإحساس اللي بدأ يكبر واحدة واحدة فاكر إني بقيت بستنى كلامك وبقيت أحب أشوف اسمك عندي وبقيت من غير ما أحس بدور على أي سبب يخليني أفتح كلام معاكي</p>
+        <p>اصلا من اول ما اتكلمنا خالص كنت ببقي مبسوط وانا بكلمك مع ان كنا لسه صحاب عادي و نتي بتقوليلي اخويا 🙄</p>
+        <p>ومع الوقت بقيتي مش مجرد حد بكلمه وقت الفراغ بقيتي حد وجوده بيفرق في يومي بجد</p>
+        <p>بقيت لما يحصل معايا موقف حلو أفكر فيكي وأقول لازم أحكيلها وبقيت لما أكون مضايق أحس إني محتاج أتكلم معاكي حتى لو مش عارف أقول إيه بالظبط بس ببقي مرتاح بكون بلاقي حد فاهمني و بيهون عليا</p>
+        <p>وأكتر حاجة بحبها إن كلامنا مش محتاج سبب كبير ممكن نقعد نهزر على حاجة تافهة جدا ونضحك وكأنها أهم حاجة في الدنيا وممكن نتكلم في موضوع كبير ونفضل نفكر فيه سوا وفي الحالتين أنا ببقى مبسوط</p>
+        <p>أنا بحب تفاصيلك حتى التفاصيل اللي يمكن إنتي مش شايفاها مهمة</p>
+        <p>بحب طريقة ردك<br>
+        بحب طريقتك لما تفرحي<br>
+        بحب طريقتك لما تزعلي<br>
+        بحب هزارك<br>
+        بحب اهتمامك<br>
+        بحب إنك بتسألي عليا<br>
+        بحب لما بتغيري عليا<br>
+        بحب إنك ساعات بتفهميني من غير ما أشرح كتير<br>
+        وبحب أكتر إنك خليتيني أحس إني أقدر أكون نفسي من غير ما أخاف إنك تحكمي عليا</p>
+        <p>أنا نفسي أعرف عنك كل حاجة</p>
+        <p>نفسي أعرفك أكتر كل يوم</p>
+        <p>مش عشان أعرف معلومات عنك وخلاص لكن عشان كل ما أعرفك أكتر كل ما أفهم إزاي أخليكي مبسوطة وإزاي أكون الشخص اللي تحسي معاه براحة وأمان</p>
+        <p>أنا نفسي أكون أول شخص تفكري تكلميه لما يحصل لك حاجة حلوة او وحشه</p>
+        <p>وأكون الشخص اللي تقدري تروحي له لما تكوني مخنوقة</p>
+        <p>مش عشان أحل كل حاجة لأن أكيد مش هقدر أحل كل حاجة لكن على الأقل أكون موجود وأسمعك وأقولك إنك مش لوحدك</p>
+        <p>أنا عايز أشوفك بتكبري وتحققي الحاجات اللي نفسك فيها</p>
+        <p>عايز أشوفك فرحانة بنجاحاتك وأكون أول واحد يفرحلك</p>
+        <p>ولو في يوم فشلتي في حاجة مش عايزك تحسي إن ده بيقلل منك أبدا</p>
+        <p>أنا شايفك أكبر من أي نتيجة وأكبر من أي يوم وحش وأكبر من أي غلطة</p>
+        <p>وأتمنى دايما تفتكري إن قيمتك مش مرتبطة برأي أي حد فيكي</p>
+        <p>ومتقارنيش نفسك بحد ايا كان بقي شكل او اي حاجه عشان انتي بجد متتقارنيش بحد</p>
+        <p>بالنسبالي إنتي رودي بحبك كده</p>
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red);">أنا فعلا بحبك</p>
+        <p>ومش بحبك عشان شكل معين أو عشان موقف واحد أو عشان حاجة واحدة</p>
+        <p>أنا بحبك عشان إنتي إنتي</p>
+        <p>بحب وجودك<br>
+        بحب شخصيتك<br>
+        بحب التفاصيل اللي بتخليكي مختلفة<br>
+        وبحب إحساسي وأنا معاكي</p>
+        <p>وفي حاجات كتير نفسي نعملها سوا</p>
+        <p>نفسي نخرج ونتمشى لما نكبر و يكون كل الناس عارفه انك بتاعتي<br>
+        نفسي نقعد في مكان هادي ونتكلم بالساعات<br>
+        نفسي نضحك على حاجات ملهاش لازمة<br>
+        نفسي ناخد صور كتير حتى لو الصور عادية جدا<br>
+        نفسي يبقى عندنا صور نرجعلها بعد سنين ونفتكر كنا فين وكنا بنضحك على إيه<br>
+        نفسي نعمل ذكريات كتييير</p>
+        <p>يمكن بعد سنة نكون اتغيرنا</p>
+        <p>ولو سألتيني إيه أكتر حاجة نفسي فيها من اللي بينا</p>
+        <p>هقولك إني نفسي نفضل مع بعض</p>
+        <p>نفسي لما حاجة تضايقك تقوليلي<br>
+        ولما حاجة تفرحك تحكيلي<br>
+        نفسي متضطريش أبدا تخبي حاجة عشان خايفة من رد فعلي<br>
+        ونفسي أنا كمان أفضل قادر أقولك اللي جوايا</p>
+        <p>لأن بالنسبة ليا العلاقة الحلوة مش بس كلام حلو</p>
+        <p>العلاقة الحلوة إن كل واحد يحس إنه مسموع ومفهوم ومقدر</p>
+        <p>وأنا عايزك تحسي بكده معايا</p>
+        <p>عايزك تعرفي إنك مهمة</p>
+        <p>مش عشان لازم أقولها كل يوم لكن عشان ده فعلا اللي أنا حاسه</p>
+        <p>إنتي مهمة عندي<br>
+        كلامك مهم<br>
+        زعلك مهم<br>
+        فرحتك مهمة<br>
+        وأي حاجة تخصك بتهمني</p>
+        <p>وأنا مش عايز أبقى مجرد شخص في حياتك وخلاص</p>
+        <p>نفسي أبقى جزء حلو من حياتك</p>
+        <p>الشخص اللي لما تفتكريه تبتسمي<br>
+        والشخص اللي لما تحتاجيه تلاقيه<br>
+        والشخص اللي حتى لو الدنيا كلها كانت ضدك يحاول يخليكي تحسي إن في حد في ضهرك</p>
+        <p>وممكن الكلام ده كله يبان كتير</p>
+        <p>بس صدقيني أنا لسه حاسس إن في كلام أكتر جوايا</p>
+        <p>لأن مهما كتبت مش هعرف أحط كل اللي جوايا</p>
+        <p>في حاجات بتتحس أكتر ما بتتقال</p>
+        <p>واللي بحسه لما بكلمك من الحاجات دي</p>
+        <p>بس على الأقل حبيت أسيبلك حاجة مكتوبة</p>
+        <p>حاجة تقدري ترجعي لها في أي وقت</p>
+        <p>ولو في يوم وحش فتحتي الرسالة دي</p>
+        <p>أتمنى تبتسمي حتى لو ابتسامة صغيرة</p>
+        <p>ولو كنتي مبسوطة لما تقريها</p>
+        <p>أتمنى فرحتك تزيد</p>
+        <p>ولو كنتي وحشاني في يوم</p>
+        <p>افتكري إن في شخص كتبلك كل الكلام ده لأنه كان نفسه يكون قريب منك</p>
+
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.1rem;">أنا بحبك يا رودي</p>
+        <p>نفسي كل يوم نعرف بعض أكتر<br>
+        كل يوم نثق في بعض أكتر<br>
+        كل يوم يبقى عندنا سبب جديد نحب بعض عشانه</p>
+
+        <p>ولو في يوم رجعنا للرسالة دي بعد فترة طويلة<br>
+        نفسي نضحك ونقول كنا لسه في البداية ومكناش نعرف إن قدامنا كل الذكريات دي</p>
+
+        <p>ومهما حاولت أوصفلك إنتي بالنسبة ليا إيه<br>
+        هفضل حاسس إن الكلام أقل من الإحساس</p>
+
+        <p>بس يمكن أبسط وأصدق جملة أقدر أقولها</p>
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.15rem;">أنا بحبك يا رودي</p>
+
+        <p>خلي الويب دي عندك<br>
+        ولو في يوم وحشتك كلمة مني افتحيها<br>
+        ولو في يوم شكيتي قد إيه إنتي مهمة عندي افتحيها</p>
+
+        <p>يمكن أنا بكرر كلمة بحبك كتير بس كل مرة بقولها بحس إن معناها مختلف شوية عن المرة اللي قبلها لأن كل يوم بيعدي وأنا معاكي بحس إن في سبب جديد يخليني أحبك أكتر</p>
+
+        <p>وممكن أوقات أبقى ساكت أو مش بعرف أقول كلام كتير بس والله بيبقي جوايا حاجات و كلام انا مش عارف اطلعه</p>
+
+        <p>أنا ساعات بقعد أفكر في حاجات صغيرة حصلت بينا واضحك لوحدي</p>
+        <p>ممكن كلمة قولتيها<br>
+        ممكن موقف بسيط<br>
+        ممكن هزار بينا<br>
+        ممكن حتى طريقة ردك على حاجة تافهة</p>
+
+        <p>بس الحاجات دي بالنسبالي مش تافهة لأنها حصلت بيني وبينك</p>
+
+        <p>وده يمكن من أكتر الحاجات اللي خلتني أعرف إنك بقيتي مهمة عندي بجد</p>
+
+        <p>لأن الحاجة اللي ملهاش قيمة عند أي حد ممكن تبقى ليها قيمة كبيرة عندي لمجرد إنها مرتبطة بيكي</p>
+
+        <p>وأنا بحب فكرة إن في تفاصيل صغيرة بينا محدش يعرف قيمتها غيرنا</p>
+
+        <p>حاجات لما نفتكرها بعد فترة هنضحك ونقول فاكرة لما حصل كذا<br>
+        فاكرة لما كنا بنتكلم في كذا<br>
+        فاكرة اليوم ده<br>
+        فاكرة الرسالة دي<br>
+        فاكرة أول مرة قولنا لبعض كلام معين</p>
+
+        <p>نفسي يبقى عندنا من الذكريات دي كتير</p>
+
+        <p>مش عايز علاقتنا تبقى مجرد كلام حلو بيتقال وخلاص<br>
+        نفسي تبقى مليانة مواقف حقيقية<br>
+        مواقف نضحك عليها<br>
+        ومواقف نتعلم منها<br>
+        ومواقف نكبر بسببها<br>
+        ومواقف نختلف فيها وبعدها نفهم بعض أكتر</p>
+
+        <p>لأن بالنسبالي الحب مش إننا نفضل مبسوطين طول الوقت<br>
+        الحب الحقيقي إن حتى لما الدنيا تبقى صعبة نفضل مع بعض</p>
+
+        <p>إننا لما نزعل من بعض منبقاش مستنيين مين يكسب<br>
+        نبقى مستنيين إمتى نرجع</p>
+
+        <p>وأنا نفسي دايما لما يحصل بينا أي حاجة نفتكر إن إحنا مش ضد بعض<br>
+        إحنا ضد المشكلة نفسها</p>
+
+        <p>ولو أنا في يوم زعلتك من غير قصد متخليش لحظة واحدة وحشة تمسح كل اللحظات الحلوة اللي بينا</p>
+
+        <p>وأنا كمان هحاول دايما أعمل كده</p>
+
+        <p>لأن مفيش إنسان كامل<br>
+        وأنا مش كامل<br>
+        ومش عايزك تحبيني على أساس إني كامل</p>
+
+        <p>عايزك تعرفي عيوبي قبل مميزاتي<br>
+        وتعرفي إن ممكن أكون ساعات عصبي أو متضايق أو مش عارف أتكلم<br>
+        بس في النهاية أنا نفس الشخص اللي بيحبك وعايزك تكوني مبسوطة</p>
+
+        <p>نفسي أكون الشخص اللي تقدري تكوني معاه على طبيعتك<br>
+        من غير ما تفكري قبل كل كلمة<br>
+        من غير ما تخافي إنك لو قولتي حاجة معينة هتتغير نظرتي ليكي</p>
+
+        <p>قولي اللي جواكي<br>
+        احكيلي عن يومك حتى لو كان عادي<br>
+        احكيلي عن الحاجة اللي فرحتك<br>
+        احكيلي عن الحاجة اللي ضايقتك<br>
+        احكيلي عن الحاجة اللي نفسك تعمليها<br>
+        حتى لو شايفاها بسيطة</p>
+
+        <p>انا عايز أسمعك</p>
+
+        <p>لأن الكلام اللي بيطلع منك بالنسبالي عمره ما هيكون ممل<br>
+        حتى لو بتتكلمي عن نفس الحاجة للمرة العاشرة<br>
+        هسمعك</p>
+
+        <p>يمكن مش هعرف أديكي الحل الصح دايما<br>
+        بس هحاول أكون موجود<br>
+        وأوقات يمكن كل اللي هتحتاجيه إن حد يسمعك<br>
+        وأنا عايز أكون الحد ده</p>
+
+        <p>نفسي أعرف كل النسخ اللي فيكي زي ما كنتي بتقولي جواكي خمسه</p>
+
+        <p>ومش عايز منك أبدا إنك تفضلي قوية قدامي طول الوقت</p>
+
+        <p>لو تعبتي قولي<br>
+        لو وحشتك حاجة قولي<br>
+        لو محتاجة تتكلمي اتكلمي<br>
+        لو عايزة تسكتي هفضل موجود برضه</p>
+
+        <p>لأن وجودي جنبك مش المفروض يكون بس في الوقت اللي كل حاجة فيه حلوة<br>
+        أنا نفسي أكون موجود في الأيام كلها<br>
+        الوحشه قبل الحلوه</p>
+
+        <p>وأنا مقدر وجودك عندي جدا</p>
+
+        <p>يمكن ساعات مش بعرف أوضح ده<br>
+        بس أنا مقدره<br>
+        ومش عايز أخد وجودك كأنه حاجة مضمونة</p>
+
+        <p>وأنا مقدر كل حاجة عملتيها عشاني حتى لو كانت حاجة صغيرة<br>
+        يمكن إنتي نفسك نسيتيها<br>
+        بس أنا ممكن أكون فاكرها<br>
+        كلمة حلوة<br>
+        اهتمام في وقت معين<br>
+        او سؤال<br>
+        رسالة جت في وقت أنا كنت محتاجها<br>
+        حاجات زي دي بتفضل في القلب</p>
+
+        <p>وأنا بحب إنك من الناس اللي عندها القدرة إنها تخلي حاجة بسيطة تفرق</p>
+
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.15rem;">بحبك اوي بجد و بموووت فيكي و بعشقككك والله</p>
+
+        <p>وعايزك تعرفي إنك بتفرقي<br>
+        بجد بتفرقي<br>
+        وجودك بيفرق<br>
+        كلامك بيفرق<br>
+        اهتمامك بيفرق<br>
+        حتى مجرد إنك موجودة في يومي بيفرق</p>
+
+        <p>نفسي نكبر مع بعض</p>
+
+        <p>نفسي كل شهر يعدي علينا يبقى عندنا سبب جديد نفتكر بيه إننا قربنا أكتر<br>
+        نفسي نفضل نكتشف بعض<br>
+        لأن الإنسان مش كتاب بيتقري مرة واحدة وخلاص<br>
+        كل يومفيه حاجة جديدة<br>
+        وكل موقف بيكشف جزء جديد<br>
+        وأنا عايز أفضل أكتشفك<br>
+        حتى بعد وقت طويل</p>
+
+        <p>نفسي أتعلمك مش أحفظك</p>
+
+        <p>ونفسي في يوم نبص على البداية ونستغرب قد إيه الوقت عدى بسرعة<br>
+        نفتكر إننا كنا لسه بنتعرف<br>
+        ومهما حصل بعد كده<br>
+        مش هقدر أنكر إن معرفتك كانت من اجمل الحاجات اللي حصلتلي</p>
+
+        <p>وأنا مستعد أتعلم كل يوم إزاي أكون شخص أحسن ليكي<br>
+        مش عشان أبقى مثالي<br>
+        لكن عشان إنتي تستاهلي إني أحاول<br>
+        ولو في يوم حسيتي إني قصرت متخبيش ده<br>
+        قوليلي</p>
+
+        <p>وفي الآخر مهما كتبت ومهما طولت<br>
+        هفضل حاسس إن الرسالة دي مش كفاية</p>
+
+        <p>حصل حاجه بينا او اتخانقنا او زعلانه مني او ايا كان<br>
+        اقري الكلام ده<br>
+        ولو في يوم حسيتي إنك مش مهمة<br>
+        افتكري إن في حد كتبلك كل الكلام ده عشان يقولك إنك مهمة عنده ازاي</p>
+
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.15rem;">بحبك يا رودي والله و بعشقككك</p>
+
+        <p>وبحب كل تفصيلة صغيرة خلتني أوصل للإحساس ده<br>
+        وبحب إن قصتنا لسه في أولها<br>
+        وبتمنى من قلبي إن اللي جاي يبقى أحلى</p>
+
+        <p>وعارف إني مش عايز أتعامل مع وجودك كأنه شيء عادي<br>
+        لأنك بالنسبة ليا مش عادية</p>
+
+        <p>بحبك اوي<br>
+        بحب كل حاجه فيكي كل حاجه بجد<br>
+        بحب شكلك اوي و ملامحك<br>
+        مش عارف ازاي مش عجباكي<br>
+        والله انتي احلي واحده في عيني</p>
+
+        <p>ولو في يوم مدايقه من حاجه او زهقانه او مش حاسه انك مهمه ايا كان افتكري إن في حد اسمه عبدالرحمن بيحبك بجد<br>
+        بيحبك اوي والله و بيموووت فيكي و بيعشقككك يا قطتي<br>
+        عمري ما هلاقي حد زيك</p>
+
+        <p>نفسي نكبر بقي اوي واتجوزك</p>
+
+        <p>وتبقي بتاعتي</p>
+
+        <p>انا بس ليا لوحدي</p>
+
+        <p>عمرك ما هتتخيلي انا بحبك ازاي والله</p>
+
+        <p>بحبك بطريقه مجنونه</p>
+
+        <p>اول مره احب حد كده</p>
+
+        <p>انتي لو سحرالي مش هحبك كده</p>
+
+        <p>نفسي اخليكي دايما مبسوطه</p>
+
+        <p>نفسي اكون الشخص اللي لما تكوني عايزه تحكي حاجه تحكيله والشخص اللي بتلجئيله</p>
+
+        <p>انتي اول حد يدخل حياتي احبه كده واكون خايف اخسره كده</p>
+
+        <p>من اكبر مخاوفي بجد اخسرك</p>
+
+        <p>انتي مش مجرد شخص عادي في يومي</p>
+
+        <p>ده انتي يومي</p>
+
+        <p>يومي ميمشيش غير بيكي منغيرك هحس في حاجه ناقصه</p>
+
+        <p style="text-align: center; font-weight: bold; color: var(--accent-red); font-size: 1.25rem;">بحبك يا رودي ❤️</p>
+        <p style="text-align: left; font-weight: bold; margin-top: 20px; font-size: 1.1rem; color: var(--text-dark);">عبدالرحمن ❤️</p>
+    </div>
+</div>
+
+<script>
+    function checkPass() {
+        const input = document.getElementById('passCode').value.trim().toLowerCase();
+        const error = document.getElementById('passError');
+        
+        if (input === '2405' || input === '24/5' || input === '24 may' || input === 'may 24' || input === '24-05') {
+            document.getElementById('lockScreen').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+            
+            const audio = document.getElementById('bgMusic');
+            if (audio) {
+                audio.play().catch(err => console.log("Audio autoplay restricted by browser: ", err));
+            }
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#a81c39', '#f8dae2', '#ff4d6d']
+                });
+            }
+        } else {
+            error.innerText = "الباسورد مش صح يا قطتي.. ";
+        }
+    }
+
+    const reasonsList = [
+        "علشان ضحكتك بتنور يومي كله أول ما بشوفها",
+        "علشان طريقتك ودلعك معايا مش عند حد تاني في الدنيا",
+        "علشان حنيتك واهتمامك بيخلوني أحس إني ملكت كل حاجة",
+        "علشان إنتي الوحيدة اللي بتعرفي تفهميني من غير ما أتكلم",
+        "علشان كلامنا مع بعض بيهون عليا أي حاجة تقيلة",
+        "علشان ملامحك وجمالك بالنسبة ليا أحلى حاجة في العالم كله",
+        "علشان وجودك خلى لحياتي طعم",
+        "علشان إنتي رودي وأنا بموت فيكي وبحبك زي ما إنتي",
+        "علشان صوتك بيفصلني عن أي دوشة وضغط في العالم",
+        "علشان لما بتزعلي ببقى عايز أعمل المستحيل عشان أراضيكي",
+        "علشان هزارك بيخلوني أبتسم غصب عني كل ما أفتكرهم",
+        "علشان بحس بالأمان وأنا قاعد بتكلم معاكي",
+        "علشان إنتي مش مجرد حد بكلمه إنتي الأمان بتاع قلبي",
+        "علشان لما بتحكيلي عن تفاصيل يومك ببقى مستمتع كأني بقرأ أحلى رواية",
+        "علشان عيونك فيها سحر بيخليني أتوه من أول نظرة",
+        "علشان بتهتمي بأبسط التفاصيل اللي بتخصني",
+        "علشان بتخليني أبقى على طبيعتي من غير أي تصنع",
+        "علشان لما بغيب عنك بلاقي نفسي بفكر فيكي طول الوقت",
+        "علشان إنتي أطول وأحلى حكاية بدأت معايا وصح",
+        "علشان كل الأغاني الرومانسية بقت تكررني بيكي",
+        "علشان سندك ليا ملوش مثيل",
+        "علشان قلبك الأبيض وطيبتك اللي مبشوفش زيهم",
+        "علشان إنتي أحلى صدفة حصلت في حياتي كلها",
+        "علشان مستقبل كل أيامي الجاية شايفك فيه جنبي",
+        "علشان حتى لما بنختلف بنرجع نحب بعض أكتر من الأول",
+        "علشان بحب طريقتك وأنتِ بتغيري أو بتتعصبي",
+        "علشان إنتي أحلى نعمة ربنا رزقني بيها بجد",
+        "علشان بحبك إمبارح وبحبك النهاردة وهفضل بحبك للأبد"
+    ];
+
+    function showRandomReason() {
+        const box = document.getElementById('randomReasonBox');
+        const random = reasonsList[Math.floor(Math.random() * reasonsList.length)];
+        box.innerText = random;
+    }
+
+    function openLetterOnly() {
+        const audio = document.getElementById('bgMusic');
+        if (audio && audio.paused) {
+            audio.play().catch(e => console.log(e));
+        }
+        document.getElementById('letterModal').style.display = 'flex';
+    }
+
+    function closeLetter() {
+        document.getElementById('letterModal').style.display = 'none';
+    }
+
+    const startDate = new Date('2026-05-24T00:00:00');
+    function updateCounter() {
+        const now = new Date();
+        const diff = now - startDate;
+        if (diff < 0) return;
+
+        const secondsTotal = Math.floor(diff / 1000);
+        const minutesTotal = Math.floor(secondsTotal / 60);
+        const hoursTotal = Math.floor(minutesTotal / 60);
+        const daysTotal = Math.floor(hoursTotal / 24);
+
+        const years = Math.floor(daysTotal / 365);
+        const months = Math.floor((daysTotal % 365) / 30);
+        const days = Math.floor((daysTotal % 365) % 30);
+
+        const yearsEl = document.getElementById('years');
+        const monthsEl = document.getElementById('months');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        if (yearsEl) yearsEl.innerText = String(years).padStart(2, '0');
+        if (monthsEl) monthsEl.innerText = String(months).padStart(2, '0');
+        if (daysEl) daysEl.innerText = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.innerText = String(hoursTotal % 24).padStart(2, '0');
+        if (minutesEl) minutesEl.innerText = String(minutesTotal % 60).padStart(2, '0');
+        if (secondsEl) secondsEl.innerText = String(secondsTotal % 60).padStart(2, '0');
+
+        const daysTogetherEl = document.getElementById('days-together');
+        if (daysTogetherEl) daysTogetherEl.innerText = `${daysTotal} days together`;
+
+        const remainingTo1Year = 365 - daysTotal;
+        const nextMilestoneEl = document.getElementById('next-milestone');
+        if (nextMilestoneEl) {
+            if (remainingTo1Year > 0) {
+                nextMilestoneEl.innerText = `${remainingTo1Year} days to 1 year together`;
+            } else {
+                nextMilestoneEl.innerText = `Happy 1st Anniversary! ❤️`;
+            }
+        }
+    }
+
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    function calcCompat() {
+        const name = document.getElementById('partnerName').value;
+        const compatResult = document.getElementById('compatResult');
+        if (!name.trim()) {
+            if (compatResult) compatResult.innerText = "اكتبي اسمك الأول يا روحي!";
+            return;
+        }
+        if (compatResult) compatResult.innerText = "نسبة التوافق 1000% ❤️";
+    }
+
+    function createHeart() {
+        const heartsContainer = document.getElementById('heartsContainer');
+        if (!heartsContainer) return;
+
+        const heart = document.createElement('div');
+        heart.classList.add('floating-heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => { heart.remove(); }, 8000);
+    }
+
+    setInterval(createHeart, 600);
+</script>
+
+</body>
+</html>
